@@ -13,9 +13,9 @@ const (
 	height       = 630
 	paddingX     = 100
 	paddingY     = 150
-	fontFamily   = "sans-serif"
-	bgColorStart = "#171717"
-	bgColorEnd   = "#6d28d9"
+	fontFamily   = "Pretendard"
+	bgColorStart = "#a21caf"
+	bgColorEnd   = "#6366f1"
 
 	titleSize  = 50
 	titleColor = "#f5f5f5"
@@ -35,10 +35,15 @@ func GenerateSVG(ctx context.Context, payload *Payload) io.Reader {
 		canvas := svg.New(pw)
 		canvas.Start(width, height)
 
+		// Font
+		canvas.Def()
+		canvas.Style("text/css", `@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css")`)
+		canvas.DefEnd()
+
 		// Background
 		gradientID := "gradient"
 		canvas.Def()
-		canvas.LinearGradient(gradientID, 0, 70, 100, 30, []svg.Offcolor{
+		canvas.LinearGradient(gradientID, 0, 100, 100, 0, []svg.Offcolor{
 			{Offset: 5, Color: bgColorStart, Opacity: 100},
 			{Offset: 95, Color: bgColorEnd, Opacity: 100},
 		})
