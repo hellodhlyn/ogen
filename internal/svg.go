@@ -1,7 +1,9 @@
 package internal
 
 import (
+	"bytes"
 	"context"
+	"encoding/xml"
 	"fmt"
 	"io"
 
@@ -62,11 +64,14 @@ func GenerateSVG(ctx context.Context, payload *Payload) io.Reader {
 		}
 
 		// Profile image
+		var profileImageURLEscaped bytes.Buffer
+		_ = xml.EscapeText(&profileImageURLEscaped, []byte(payload.ProfileImageURL))
+
 		profileImageID := "profile-image"
 		profileImageAttr := `preserveAspectRatio="xMidYMid slice"`
 		canvas.Def()
 		canvas.Pattern(profileImageID, 0, 0, profileImageSize, profileImageSize, "userSpaceOnUse")
-		canvas.Image(0, 0, profileImageSize, profileImageSize, payload.ProfileImageURL, profileImageAttr)
+		canvas.Image(0, 0, profileImageSize, profileImageSize, profileImageURLEscaped.String(), profileImageAttr)
 		canvas.PatternEnd()
 		canvas.DefEnd()
 
